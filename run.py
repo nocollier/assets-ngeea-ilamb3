@@ -19,19 +19,20 @@ df_ref = dbase.dataframe_reference()
 # Model data
 df_com = dbase.dataframe_e3sm()
 
+# remove some data to make testing run faster
+df_com = df_com[df_com['path'].str.contains("2012")]
+
 # Setups up the regions and options we will use
 ilamb_regions = ilr.Regions()
 ilamb_regions.add_latlon_bounds("arctic", "Arctic", [66.5, 90], [-180, 180])
 ilamb3.conf.set(
     regions=[None],
-    use_cached_results=False,
+    use_cached_results=True,
     model_name_facets=["model"],
     comparison_groupby=["model"],
-    shift_years=1711,
 )
 
 # Run study
 yml_file = sys.argv[1] if len(sys.argv) == 2 else "standard.yaml"
 build_dir = Path(f"_build_{yml_file.replace(".yaml","")}")
 run_study(yml_file, df_com, ref_datasets=df_ref, output_path=build_dir)
-generate_dashboard_page(build_dir, page_title="NGEE-Arctic ILAMB Results")

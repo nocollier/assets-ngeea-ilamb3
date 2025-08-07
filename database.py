@@ -10,7 +10,7 @@ import xarray as xr
 
 def dataframe_e3sm(
     root: Path = Path(
-        "/gpfs/wolf2/cades/cli185/proj-shared/f9y/archives/elm_ngee4/ELMngee4_TFSmeq2_ERA5daymet_AK-TFSG_ICB1850CNPRDCTCBC/run/"
+        "/gpfs/wolf2/cades/cli185/proj-shared/f9y/archives/elm_ngee4/ELMngee4_TFSmeq2_GSWP3daymet_AK-TFSG_ICB20TRCNPRDCTCBC/run/"
     ),
     cache_file: Path = Path("df_e3sm.csv"),
 ) -> pd.DataFrame:
