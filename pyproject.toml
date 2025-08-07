@@ -7,3 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "ilamb3>=2025.5.20",
 ]
+
+[tool.uv.sources]
+ilamb3 = { path = "../ilamb3", editable = true }

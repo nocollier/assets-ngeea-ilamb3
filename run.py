@@ -23,9 +23,11 @@ df_com = dbase.dataframe_e3sm()
 ilamb_regions = ilr.Regions()
 ilamb_regions.add_latlon_bounds("arctic", "Arctic", [66.5, 90], [-180, 180])
 ilamb3.conf.set(
-    regions=[None, "arctic"],
-    use_cached_results=True,
-    model_name_facets=["source_id"],
+    regions=[None],
+    use_cached_results=False,
+    model_name_facets=["model"],
+    comparison_groupby=["model"],
+    shift_years=1711,
 )
 
 # Run study

@@ -2,4 +2,6 @@ Ecosystem and Carbon Cycle:
   Gross Primary Productivity:
     WECANN:
       sources:
-        gpp: WECANN/gpp.nc
+        gpp: gpp_mon_WECANN-1-0_BE_gn_200701-201512.nc
+      alternate_vars:
+      - GPP

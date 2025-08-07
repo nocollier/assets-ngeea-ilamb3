@@ -5,11 +5,14 @@ Functions which build small databases which ilamb3 will use.
 from pathlib import Path
 
 import pandas as pd
+import xarray as xr
 
 
 def dataframe_e3sm(
-    root: Path = Path("/lustre/orion/cli137/world-shared/ESGF-data/CMIP6"),
-    cache_file: Path = Path("df_cmip.csv"),
+    root: Path = Path(
+        "/gpfs/wolf2/cades/cli185/proj-shared/f9y/archives/elm_ngee4/ELMngee4_TFSmeq2_ERA5daymet_AK-TFSG_ICB1850CNPRDCTCBC/run/"
+    ),
+    cache_file: Path = Path("df_e3sm.csv"),
 ) -> pd.DataFrame:
     if cache_file.exists():
         df = pd.read_csv(cache_file)
@@ -19,30 +22,31 @@ def dataframe_e3sm(
         for fname in files:
             if not fname.endswith(".nc"):
                 continue
+            if ".h0." not in fname:
+                continue
             path = str((dirpath / fname).absolute())
-            df.append(
+            ds = xr.open_dataset(path)
+            tokens = fname.split("_")
+            df += [
                 {
-                    "mip_era": path.split("/")[-11],
-                    "activity_id": path.split("/")[-10],
-                    "institution_id": path.split("/")[-9],
-                    "source_id": path.split("/")[-8],
-                    "experiment_id": path.split("/")[-7],
-                    "member_id": path.split("/")[-6],
-                    "table_id": path.split("/")[-5],
-                    "variable_id": path.split("/")[-4],
-                    "grid_label": path.split("/")[-3],
+                    "model": tokens[0],
+                    "question": tokens[1],
+                    "forcing": tokens[2],
+                    "location": tokens[3],
+                    "variable_id": v,
                     "path": path,
                 }
-            )
+                for v in ds
+                if "time" in ds[v].dims
+            ]
+
     df = pd.DataFrame(df)
     df.to_csv(cache_file, index=False)
     return df
 
 
 def dataframe_reference(
-    root: Path = Path(
-        "/lustre/orion/world-shared/cli138/deeksha/ILAMB-Hydro/Data/Reference"
-    ),
+    root: Path = Path("/ccsopen/proj/cli185/ilamb-work/reference-data/"),
     cache_file: Path = Path("df_reference.csv"),
 ) -> pd.DataFrame:
     if cache_file.exists():
