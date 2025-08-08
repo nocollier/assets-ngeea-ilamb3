@@ -10,3 +10,18 @@ dependencies = [
 
 [tool.uv.sources]
 ilamb3 = { path = "../ilamb3", editable = true }
+
+[tool.ruff.lint]
+ignore = [
+    "E501", # let ruff worry about line length
+]
+select = [
+    "F",  # Pyflakes
+    "E",
+    "W",  # Pycodestyle
+    "I",  # isort
+    "UP", # Pyupgrade
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["intake_esgf"]
